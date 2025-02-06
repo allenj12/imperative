@@ -160,7 +160,7 @@
       (lambda (arr low high)
         (il
           pivot := arr :: high
-          i = (- low 1)
+          i := (- low 1)
           (for (j := low) (<= j (- high 1)) (+ j 1)
                arrj := arr :: j
                (if (< arrj pivot)
