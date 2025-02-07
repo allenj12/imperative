@@ -3,6 +3,7 @@
     (export for
             while
             il
+            vi
             :=
             return
             break!
@@ -53,17 +54,17 @@
            #'(rest ...)])))
 
 
-(define-syntax proc-brackets
+(define-syntax vi
     (lambda (stx)
         (syntax-case stx (quote = ::)
           [(_ v :: n = (quote #(e ...)) :: k rest ...)
-           #'(vector-set! v n (proc-brackets (quote #(e ...)) :: k rest ...))]
+           #'(vector-set! v n (vi (quote #(e ...)) :: k rest ...))]
           [(_ v :: n = a :: k rest ...)
-           #'(vector-set! v n (proc-brackets a :: k rest ...))]
+           #'(vector-set! v n (vi a :: k rest ...))]
           [(_ v :: n = a rest ...)
            #'(vector-set! v n a)]
           [(_ v :: n :: rest ...)
-           #'(proc-brackets (vector-ref v n) :: rest ...)]
+           #'(vi (vector-ref v n) :: rest ...)]
           [(_ v :: n rest ...)
            #'(vector-ref v n)]
           [(_ rest)
@@ -79,7 +80,7 @@
     (lambda (stx)
       (syntax-case stx (= := for if return break! else elif bif while :: quote)
         [(_ (c ... lc) return v :: n rest ...)
-         #`(begin (lc (proc-brackets v :: n rest ...)) (weave (imp-lang (c ... lc) #,(skip #'(:: n rest ...)))))]
+         #`(begin (lc (vi v :: n rest ...)) (weave (imp-lang (c ... lc) #,(skip #'(:: n rest ...)))))]
         [(_ (c ... lc) return n rest ...)
          #'(begin (lc n) (imp-lang (c ... lc) rest ...))]
         [(_ (c rc ...) break! rest ...)
@@ -131,13 +132,13 @@
          #'(begin (cond checks ...) 
                   (imp-lang ccs rest ...))]
         [(_ ccs v :: n rest ...)
-         #`(begin (proc-brackets v :: n rest ...) (weave (imp-lang ccs #,(skip #'(:: n rest ...)))))]
+         #`(begin (vi v :: n rest ...) (weave (imp-lang ccs #,(skip #'(:: n rest ...)))))]
         [(_ ccs x := v :: n rest ...)
-         #`(let ([x (proc-brackets v :: n rest ...)]) (weave (imp-lang ccs #,(skip #'(:: n rest ...)))))]
+         #`(let ([x (vi v :: n rest ...)]) (weave (imp-lang ccs #,(skip #'(:: n rest ...)))))]
         [(_ ccs x := n rest ...)
          #'(let ([x n]) (imp-lang ccs rest ...))]
         [(_ ccs x = v :: n rest ...)
-         #`(begin (set! x (proc-brackets v :: n rest ...)) (weave (imp-lang ccs #,(skip #'(:: n rest ...)))))]
+         #`(begin (set! x (vi v :: n rest ...)) (weave (imp-lang ccs #,(skip #'(:: n rest ...)))))]
         [(_ ccs x = n rest ...)
          #'(begin (set! x n) (imp-lang ccs rest ...))]
         [(_ ccs h s rest ...)
