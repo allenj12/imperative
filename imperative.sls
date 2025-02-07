@@ -78,7 +78,7 @@
 
 (define-syntax imp-lang
     (lambda (stx)
-      (syntax-case stx (= := for if return break! else elif bif while :: quote)
+      (syntax-case stx (= := for if return break! else elif bif while :: lambda quote)
         [(_ (c ... lc) return v :: n rest ...)
          #`(begin (lc (vi v :: n rest ...)) (weave (imp-lang (c ... lc) #,(skip #'(:: n rest ...)))))]
         [(_ (c ... lc) return n rest ...)
@@ -135,6 +135,8 @@
          #`(begin (vi v :: n rest ...) (weave (imp-lang ccs #,(skip #'(:: n rest ...)))))]
         [(_ ccs x := v :: n rest ...)
          #`(let ([x (vi v :: n rest ...)]) (weave (imp-lang ccs #,(skip #'(:: n rest ...)))))]
+        [(_ ccs x := (lambda e ...) rest ...)
+         #'(letrec ([x (lambda e ...)]) (imp-lang ccs rest ...))]
         [(_ ccs x := n rest ...)
          #'(let ([x n]) (imp-lang ccs rest ...))]
         [(_ ccs x = v :: n rest ...)
