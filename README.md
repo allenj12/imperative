@@ -3,14 +3,14 @@ sometimes you just want a for loop. This DSL makes the syntax to a bit more frie
 
 ## Usage
 New constructs in this DSL
-:= - is for initialization
-= - is for mutation
-:: - is for array indexing (having x[y][z] syntax caused to many ambiguities without adding more annoying constructs like line ends)
-break! - acts like a traditional break statement
-return - works as expected
-if, elif, and else - work as expected in other languages and are not nested within each other
-for loops
-while loops
+:= - is for initialization\
+= - is for mutation\
+:: - is for array indexing (having x[y][z] syntax caused to many ambiguities without adding more annoying constructs like line ends)\
+break! - acts like a traditional break statement\
+return - works as expected\
+if, elif, and else - work as expected in other languages and are not nested within each other\
+for loops\
+while loops\
 
 
 ## Examples
@@ -51,6 +51,22 @@ arrj := arr :: j
 into 
 ```
 (if (< (vi arr :: j) pivot) ...)
+```
+
+also a more involved example of if statements
+```
+(il
+    (for (i := 0) (< i 10) (fx+ i 1)
+        (if (< i 2)
+            (display "lt2")
+            (newline))
+        (elif (< i 8)
+            (display "lt8")
+            (newline)
+            break!
+            (display "will never display"))
+        (else
+            (display "will never display"))))
 ```
 
 
