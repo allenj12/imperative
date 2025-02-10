@@ -7,10 +7,12 @@ New constructs in this DSL
 = - is for mutation\
 :: - is for array indexing (having x[y][z] syntax caused to many ambiguities without adding more annoying constructs like line ends)\
 break! - acts like a traditional break statement\
+\>next - gets next node in linked list
+\>val - gets value of current node in linked list
 return - works as expected\
 if, elif, and else - work as expected in other languages and are not nested within each other\
 for loops\
-while loops\
+while loops
 
 
 ## Examples
@@ -53,9 +55,15 @@ into
 (if (< (vi arr :: j) pivot) ...)
 ```
 
+or 
+```
+(if (> (vi l >next >next val) 5) ...) ;list traversal example
+```
+
 also a more involved example of if statements
 ```
 (il
+    l := '(1 2 3)
     (for (i := 0) (< i 10) (fx+ i 1)
         (if (< i 2)
             (display "lt2")
